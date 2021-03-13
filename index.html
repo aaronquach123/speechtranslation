@@ -1,17 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Speech Translator</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/foundation-sites@6.6.3/dist/css/foundation.min.css" integrity="sha256-ogmFxjqiTMnZhxCqVmcqTvjfe1Y/ec4WaRj/aQPvn+I=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/foundation-sites@6.6.3/dist/css/foundation.min.css"
+        integrity="sha256-ogmFxjqiTMnZhxCqVmcqTvjfe1Y/ec4WaRj/aQPvn+I=" crossorigin="anonymous">
     <link rel="stylesheet" href="./assets/css/style.css">
 </head>
+
 <body>
-    
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.js" integrity="sha512-n/4gHW3atM3QqRcbCn6ewmpxcLAHGaDjpEBu4xZd47N0W2oQ+6q7oc3PXstrJYXcbNU1OHdQ1T7pAP+gi5Yu8g==" crossorigin="anonymous"></script> 
+    <header>
+        <h1>Language Assistant</h1>
+    </header>
+
+    <!-- Div for starting language -->
+    <div id="starting-language">
+        <form>
+            <label for="first-language">Select your starting language</label>
+            <select name="first-language" id="first-language">
+                <option></option>
+            </select>
+            <br><br>
+            <input type="text" id="startlang" name="startlang">
+            <input type="submit" value="Submit">
+        </form>
+    </div>
+
+    <!-- Div for target language -->
+
+    <div id="new-language">
+        <form>
+            <label for="second-language">Select your target language</label>
+            <select name="second-language" id="second-language">
+                <option></option>
+            </select>
+            <br><br>
+            <input type="text" id="secondlang" name="secondlang">
+
+            <input type="submit" value="Submit">
+        </form>
+    </div>
+
+    <button type="button" class="btn">Press to Speak</button>
+
+    <!-- Div for saved content -->
+
+    <div id="saved-content"></div>
+    <h5>See it again:</h5>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.js"
+        integrity="sha512-n/4gHW3atM3QqRcbCn6ewmpxcLAHGaDjpEBu4xZd47N0W2oQ+6q7oc3PXstrJYXcbNU1OHdQ1T7pAP+gi5Yu8g=="
+        crossorigin="anonymous"></script>
     <script src="./assets/js/script.js"></script>
 </body>
+
 </html>
