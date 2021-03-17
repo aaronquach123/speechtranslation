@@ -68,6 +68,8 @@ var speechTranslate = function() {
 
 speechLangaugesGet();
 
+
+
 // Parse query string to see if page request is coming from OAuth2.0 Server
 var params = {};
 var regex = /([^&=]+)=([^&=]*)/g, m;
@@ -77,7 +79,7 @@ while (m = regex.exec(substring)) {
 }
 if (Object.keys(params).length > 0) {
     localStorage.setItem('oauth2-test-params', JSON.stringify(params) );
-    translateLanguageRequest()
+    translateLanguageRequest();
 }
 
 // attempt to call api if keys are found
@@ -126,7 +128,7 @@ var signIn = function() {
         'client_id': `${clientID}`,
         'redirect_uri': `${redirect}`,
         'response_type': 'token',
-        'scope': ['https://www.googleapis.com/auth/cloud-platform','https://www.googleapis.com/auth/cloud-translation'],
+        'scope': 'https://www.googleapis.com/auth/cloud-translation',
         'include_granted_scopes': 'true',
         'state': 'pass-through value'
     }
@@ -151,5 +153,4 @@ var translateEventHandler = function(event) {
 }
 
 translateButton.addEventListener("click", translateEventHandler);
-
 
