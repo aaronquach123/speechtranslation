@@ -22,7 +22,12 @@
         <form>
             <label for="first-language">Select your starting language</label>
             <select name="first-language" id="first-language">
-                <option></option>
+                <option value="en">English</option>
+                <option value="zh-CN">Chinese (Simplified)</option>
+                <option value="zh-TW">Chinese (Traditional)</option>
+                <option value="hi">Hindi</option>
+                <option value="es">Spanish</option>
+                <option value="fr">French</option>
             </select>
             <br><br>
             <input type="text" id="startlang" name="startlang">
@@ -37,12 +42,18 @@
         <form>
             <label for="second-language">Select your target language</label>
             <select name="second-language" id="second-language">
-                <option></option>
+                <option value="en">English</option>
+                <option value="zh-CN">Chinese (Simplified)</option>
+                <option value="zh-TW">Chinese (Traditional)</option>
+                <option value="hi">Hindi</option>
+                <option value="es">Spanish</option>
+                <option value="fr">French</option>
             </select>
             <br><br>
             <input type="text" id="secondlang" name="secondlang">
 
-            <input type="submit" value="Submit">
+            <input id="translateButton" type="submit" value="Submit">
+            
         </form>
     </div>
 
@@ -50,9 +61,11 @@
 
     <div id="saved-content"></div>
     <h5>See it again:</h5>
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.js"
         integrity="sha512-n/4gHW3atM3QqRcbCn6ewmpxcLAHGaDjpEBu4xZd47N0W2oQ+6q7oc3PXstrJYXcbNU1OHdQ1T7pAP+gi5Yu8g=="
         crossorigin="anonymous"></script>
+    <script src="./assets/js/google-api.js"></script>
     <script src="./assets/js/script.js"></script>
 </body>
 
