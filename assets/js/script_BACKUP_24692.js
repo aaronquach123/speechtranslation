@@ -1,15 +1,7 @@
+<<<<<<< HEAD
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 var recognition = new SpeechRecognition();
 var text = "";
-
-var inputText = document.querySelector('#startlang');
-var inputLanguage = document.querySelector('#first-language');
-var outputText = document.querySelector('#secondlang');
-var outputLanguage = document.querySelector('#second-language');
-var redirect = document.location.href;
-var clientID = '794573419509-4cuda41iqqvm9lj8dsree30qlohj6m38.apps.googleusercontent.com';
-var substring = location.hash.substring(1);
-
 
 $("#speech-btn").on("click", function() {
     recognition.onresult = function(event) {
@@ -67,6 +59,74 @@ var speechTranslate = function() {
 }
 
 speechLangaugesGet();
+=======
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var inputText = document.querySelector('#startlang');
+var inputLanguage = document.querySelector('#first-language');
+var outputText = document.querySelector('#secondlang');
+var outputLanguage = document.querySelector('#second-language');
+var redirect = document.location.href;
+var clientID = '794573419509-4cuda41iqqvm9lj8dsree30qlohj6m38.apps.googleusercontent.com';
+var substring = location.hash.substring(1);
 
 // Parse query string to see if page request is coming from OAuth2.0 Server
 var params = {};
@@ -153,3 +213,5 @@ var translateEventHandler = function(event) {
 translateButton.addEventListener("click", translateEventHandler);
 
 
+
+>>>>>>> kristian821
