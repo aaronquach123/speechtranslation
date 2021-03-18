@@ -1,6 +1,13 @@
+// global objects form the chrome/window speech api
+
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 var recognition = new SpeechRecognition();
-var text = "";
+
+// Listens for results of the mic
+
+recognition.interimResults = true
+
+// global selected HTML elements
 
 var inputText = document.querySelector('#startlang');
 var inputLanguage = document.querySelector('#first-language');
@@ -11,15 +18,16 @@ var clientID = '794573419509-4cuda41iqqvm9lj8dsree30qlohj6m38.apps.googleusercon
 var substring = location.hash.substring(1);
 
 
-$("#speech-btn").on("click", function() {
-    recognition.onresult = function(event) {
-        if (event.results.length > 0) {
-        text = event.results[0][0].transcript;
-        $("#startlang").val(text);
-        };
-    };
+$("#speech-btn").on('click', () => {
+    // The event is results and the event's results is pulled from a Array constructor
+    // and concats it's length
+    recognition.addEventListener('result', (e) => {
+        const words = Array.from(e.results).map(result => result[0]).map(result => result.transcript).join('');
+        inputText.value = words
+    });
+    // recongnition's methods to init
     recognition.start();
-});
+})
 
 var speechTranslate = function() {
     var firstLanguage = $("#first-language option:selected").val();
@@ -139,5 +147,4 @@ var translateEventHandler = function(event) {
 
 translateButton.addEventListener("click", translateEventHandler);
 
-console.log('test')
 
