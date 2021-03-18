@@ -1,12 +1,12 @@
-const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-var recognition = new SpeechRecognition();
-var text = "";
+// const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+// var recognition = new SpeechRecognition();
+// var text = "";
 
 var inputText = document.querySelector('#startlang');
 var inputLanguage = document.querySelector('#first-language');
 var outputText = document.querySelector('#secondlang');
 var outputLanguage = document.querySelector('#second-language');
-var redirect = document.location.href;
+var redirect = 'https://aaronquach123.github.io/speechtranslation/';
 var clientID = '794573419509-4cuda41iqqvm9lj8dsree30qlohj6m38.apps.googleusercontent.com';
 var substring = location.hash.substring(1);
 
@@ -77,13 +77,10 @@ var regex = /([^&=]+)=([^&=]*)/g, m;
 while (m = regex.exec(substring)) {
     params[decodeURIComponent(m[1])] = decodeURIComponent(m[2]);
 }
-if (Object.keys(params).length > 0) {
-    localStorage.setItem('oauth2-test-params', JSON.stringify(params) );
-    translateLanguageRequest();
-}
+
 
 // attempt to call api if keys are found
-var translateLanguageRequest = function() {
+function translateLanguageRequest() {
     
     var params = JSON.parse(localStorage.getItem('oauth2-test-params'));
     if (params && params['access_token']) {
@@ -149,7 +146,12 @@ var signIn = function() {
 
 var translateEventHandler = function(event) {
     event.preventDefault();
-    translateLanguageRequest();
+    if (Object.keys(params).length > 0) {
+        localStorage.setItem('oauth2-test-params', JSON.stringify(params) );
+        translateLanguageRequest();
+    } else {
+        signIn();
+    }
 }
 
 translateButton.addEventListener("click", translateEventHandler);
