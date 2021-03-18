@@ -1,9 +1,5 @@
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-if (navigator.userAgent === "Chrome") {
-    var recognition = new SpeechRecognition();
-} else if (navigator.userAgent === "Safari") {
-    var recognition = new webkitSpeechRecognition();
-}
+var recognition = new SpeechRecognition();
 var text = "";
 
 var inputText = document.querySelector('#startlang');
