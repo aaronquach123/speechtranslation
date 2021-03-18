@@ -21,29 +21,13 @@ $("#speech-btn").on("click", function() {
     recognition.start();
 });
 
-var speechLangaugesGet = function() {
-    var settings = {
-        "async": true,
-        "crossDomain": true,
-        "url": "https://google-translate1.p.rapidapi.com/language/translate/v2/languages?target=en",
-        "method": "GET",
-        "headers": {
-            "x-rapidapi-key": "5b577398ebmsh05c14699df757d0p137b70jsn38436407b2e2",
-            "x-rapidapi-host": "google-translate1.p.rapidapi.com"
-        }
-    };
-    
-    $.ajax(settings).done(function (response) {
-        for (var i = 0; i < response.data.languages.length; i++) {
-            var optionText = response.data.languages[i].name;
-            var optionValue = response.data.languages[i].language;
-            $("#second-language").append(`<option value="${optionValue}"> ${optionText} </option>`);
-        }
-    });
-};
-
-
 var speechTranslate = function() {
+    var firstLanguage = $("#first-language option:selected").val();
+    var secondLanguage = $("#second-language option:selected").val();
+    if (firstLanguage == secondLanguage) {
+        console.log("choose different translated language")
+        return;
+    }
     var settings = {
         "async": true,
         "crossDomain": true,
@@ -55,20 +39,22 @@ var speechTranslate = function() {
             "x-rapidapi-host": "google-translate1.p.rapidapi.com"
         },
         "data": {
-            "q": $("#startlang"),
-            "source": "en",
-            "target": "es"
+            "q": $("#startlang").val(),
+            "source": firstLanguage,
+            "target": secondLanguage
         }
     };
     
     $.ajax(settings).done(function (response) {
         console.log(response);
+        $("#secondlang").val(response.data.translations[0].translatedText)
     });
-}
+};
 
-speechLangaugesGet();
-
-
+$("#submit").on("click", function(event) {
+    event.preventDefault();
+    speechTranslate();
+});
 
 // Parse query string to see if page request is coming from OAuth2.0 Server
 var params = {};
