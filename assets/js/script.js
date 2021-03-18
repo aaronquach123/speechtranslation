@@ -139,3 +139,5 @@ var translateEventHandler = function(event) {
 
 translateButton.addEventListener("click", translateEventHandler);
 
+console.log('test')
+
