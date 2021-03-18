@@ -4,11 +4,17 @@ var text = "";
 
 $("#speech-btn").on("click", function() {
     recognition.onresult = function(event) {
+        $("#speech-btn")
+        .text("Press to record")
+        .addClass("");
         if (event.results.length > 0) {
         text = event.results[0][0].transcript;
         $("#startlang").val(text);
-        };
+        }
     };
+    $("#speech-btn")
+    .text("Now recording...")
+    .addClass("");
     recognition.start();
 });
 
