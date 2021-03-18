@@ -1,6 +1,6 @@
-// const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-// var recognition = new SpeechRecognition();
-// var text = "";
+const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+var recognition = new SpeechRecognition();
+var text = "";
 
 var inputText = document.querySelector('#startlang');
 var inputLanguage = document.querySelector('#first-language');
