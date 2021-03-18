@@ -55,8 +55,8 @@ $("#submit").on("click", function(event) {
     event.preventDefault();
     speechTranslate();
 });
-
-// Parse query string to see if page request is coming from OAuth2.0 Server
+var translationEvent = function() {
+    // Parse query string to see if page request is coming from OAuth2.0 Server
 var params = {};
 var regex = /([^&=]+)=([^&=]*)/g, m;
 
@@ -129,15 +129,12 @@ var signIn = function() {
     document.body.appendChild(form);
     form.submit();
 }
+}
 
 var translateEventHandler = function(event) {
     event.preventDefault();
-    if (Object.keys(params).length > 0) {
-        localStorage.setItem('oauth2-test-params', JSON.stringify(params) );
-        translateLanguageRequest();
-    } else {
-        signIn();
-    }
+    translationEvent();
+    
 }
 
 translateButton.addEventListener("click", translateEventHandler);
