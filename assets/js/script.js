@@ -77,7 +77,13 @@ var regex = /([^&=]+)=([^&=]*)/g, m;
 while (m = regex.exec(substring)) {
     params[decodeURIComponent(m[1])] = decodeURIComponent(m[2]);
 }
-
+if (Object.keys(params).length > 0) {
+    
+    localStorage.setItem('oauth2-test-params', JSON.stringify(params));
+      translateLanguageRequest();
+  } else {
+      signIn();
+  }
 
 // attempt to call api if keys are found
 function translateLanguageRequest() {
@@ -111,7 +117,7 @@ function translateLanguageRequest() {
     }
 }
 
-var signIn = function() {
+function signIn() {
 // find google's OAuth2 endpoint
     var oauth2Endpoint = 'https://accounts.google.com/o/oauth2/v2/auth';
 
