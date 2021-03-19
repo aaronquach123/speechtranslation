@@ -57,6 +57,10 @@ $("#submit").on("click", function(event) {
     speechTranslate();
 });
 
+<<<<<<< HEAD
+
+=======
+>>>>>>> 983fa1de373e9ea69d37903f5b68b2483476516f
 var translationEvent = function() {
     // Parse query string to see if page request is coming from OAuth2.0 Server
 var params = {};
@@ -65,6 +69,7 @@ var regex = /([^&=]+)=([^&=]*)/g, m;
 while (m = regex.exec(substring)) {
     params[decodeURIComponent(m[1])] = decodeURIComponent(m[2]);
 }
+<<<<<<< HEAD
 if (Object.keys(params).length > 0) {
     
     localStorage.setItem('oauth2-test-params', JSON.stringify(params));
@@ -73,9 +78,12 @@ if (Object.keys(params).length > 0) {
       signIn();
   }
 }
+=======
+
+>>>>>>> 983fa1de373e9ea69d37903f5b68b2483476516f
 
 // attempt to call api if keys are found
-function translateLanguageRequest() {
+var test = function translateLanguageRequest() {
     
     var params = JSON.parse(localStorage.getItem('oauth2-test-params'));
     if (params && params['access_token']) {
@@ -106,7 +114,7 @@ function translateLanguageRequest() {
     }
 }
 
-function signIn() {
+var signIn = function() {
 // find google's OAuth2 endpoint
     var oauth2Endpoint = 'https://accounts.google.com/o/oauth2/v2/auth';
 
@@ -142,7 +150,7 @@ function signIn() {
 
 var translateEventHandler = function(event) {
     event.preventDefault();
-    translationEvent();
+    // translationEvent();
    var translate = function() {
     fetch("https://google-translate20.p.rapidapi.com/translate", {
 	"method": "POST",
