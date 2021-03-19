@@ -55,6 +55,8 @@ $("#submit").on("click", function(event) {
     event.preventDefault();
     speechTranslate();
 });
+
+
 var translationEvent = function() {
     // Parse query string to see if page request is coming from OAuth2.0 Server
 var params = {};
@@ -70,6 +72,7 @@ if (Object.keys(params).length > 0) {
   } else {
       signIn();
   }
+}
 
 // attempt to call api if keys are found
 function translateLanguageRequest() {
@@ -135,13 +138,36 @@ function signIn() {
     document.body.appendChild(form);
     form.submit();
 }
-}
+
 
 var translateEventHandler = function(event) {
     event.preventDefault();
     translationEvent();
+   var translate = function() {
+    fetch("https://google-translate20.p.rapidapi.com/translate", {
+	"method": "POST",
+	"headers": {
+		"content-type": "application/x-www-form-urlencoded",
+		"x-rapidapi-key": "a4a50e023cmshca20ae4fd4b69fep1f1316jsnd513ff4ed54e",
+		"x-rapidapi-host": "google-translate20.p.rapidapi.com"
+	},
+	"body": {
+		"text": "The POST method has several advantages over GET: it is more secure because most of the request is hidden from the user; Suitable for big data operations.",
+		"tl": "es",
+		"sl": "en"
+	}
+})
+.then(response => {
+	console.log(response);
+})
+.catch(err => {
+	console.error(err);
+});
+   };
     
-}
+};
+
+
 
 translateButton.addEventListener("click", translateEventHandler);
 
