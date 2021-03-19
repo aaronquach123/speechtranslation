@@ -16,10 +16,10 @@ $("#speech-btn").on("click", function() {
         if (event.results.length > 0) {
         text = event.results[0][0].transcript;
         $("#startlang").val(text);
+        speechTranslate();
         };
     };
     recognition.start();
-    speechTranslate();
 });
 
 var speechTranslate = function() {
@@ -28,7 +28,7 @@ var speechTranslate = function() {
     if (firstLanguage == secondLanguage) {
         console.log("choose different translated language")
         return;
-    }
+    } 
     var settings = {
         "async": true,
         "crossDomain": true,
