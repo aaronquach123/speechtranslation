@@ -1,13 +1,6 @@
-// global objects form the chrome/window speech api
-
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 var recognition = new SpeechRecognition();
-
-// Listens for results of the mic
-
-recognition.interimResults = true
-
-// global selected HTML elements
+var text = "";
 
 var inputText = document.querySelector('#startlang');
 var inputLanguage = document.querySelector('#first-language');
@@ -18,16 +11,16 @@ var clientID = '794573419509-4cuda41iqqvm9lj8dsree30qlohj6m38.apps.googleusercon
 var substring = location.hash.substring(1);
 
 
-$("#speech-btn").on('click', () => {
-    // The event is results and the event's results is pulled from a Array constructor
-    // and concats it's length
-    recognition.addEventListener('result', (e) => {
-        const words = Array.from(e.results).map(result => result[0]).map(result => result.transcript).join('');
-        inputText.value = words
-    });
-    // recongnition's methods to init
+$("#speech-btn").on("click", function() {
+    recognition.onresult = function(event) {
+        if (event.results.length > 0) {
+        text = event.results[0][0].transcript;
+        $("#startlang").val(text);
+        };
+    };
     recognition.start();
-})
+    speechTranslate();
+});
 
 var speechTranslate = function() {
     var firstLanguage = $("#first-language option:selected").val();
@@ -63,6 +56,7 @@ $("#submit").on("click", function(event) {
     event.preventDefault();
     speechTranslate();
 });
+
 var translationEvent = function() {
     // Parse query string to see if page request is coming from OAuth2.0 Server
 var params = {};
@@ -71,16 +65,10 @@ var regex = /([^&=]+)=([^&=]*)/g, m;
 while (m = regex.exec(substring)) {
     params[decodeURIComponent(m[1])] = decodeURIComponent(m[2]);
 }
-if (Object.keys(params).length > 0) {
-    
-    localStorage.setItem('oauth2-test-params', JSON.stringify(params));
-      translateLanguageRequest();
-  } else {
-      signIn();
-  }
+
 
 // attempt to call api if keys are found
-function translateLanguageRequest() {
+var test = function translateLanguageRequest() {
     
     var params = JSON.parse(localStorage.getItem('oauth2-test-params'));
     if (params && params['access_token']) {
@@ -111,7 +99,7 @@ function translateLanguageRequest() {
     }
 }
 
-function signIn() {
+var signIn = function() {
 // find google's OAuth2 endpoint
     var oauth2Endpoint = 'https://accounts.google.com/o/oauth2/v2/auth';
 
@@ -152,5 +140,4 @@ var translateEventHandler = function(event) {
 }
 
 translateButton.addEventListener("click", translateEventHandler);
-
 
