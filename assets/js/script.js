@@ -1,14 +1,27 @@
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 var recognition = new SpeechRecognition();
 var text = "";
+var mem = [];
 
 var inputText = document.querySelector('#startlang');
 var inputLanguage = document.querySelector('#first-language');
 var outputText = document.querySelector('#secondlang');
 var outputLanguage = document.querySelector('#second-language');
+var savedLangauages = document.querySelector('#saved-content')
 var redirect = 'https://aaronquach123.github.io/speechtranslation/';
 var clientID = '794573419509-4cuda41iqqvm9lj8dsree30qlohj6m38.apps.googleusercontent.com';
 var substring = location.hash.substring(1);
+
+window.onload = () => {
+    if( localStorage.getItem('dataJSON') === null ) {
+        savedLangauages.innerHTML = 'no past translations made'
+    } else {
+        let dataJSON = localStorage.getItem('dataJSON');
+        parsedJSON = JSON.parse(dataJSON);
+        mem = parsedJSON
+        listJSON()
+    }
+}
 
 
 $("#speech-btn").on("click", function() {
@@ -47,8 +60,10 @@ var speechTranslate = function() {
     };
     
     $.ajax(settings).done(function (response) {
-        console.log(response);
-        $("#secondlang").val(response.data.translations[0].translatedText)
+        $("#secondlang").val(response.data.translations[0].translatedText);
+        buildJSON()
+        saveJSON()
+        console.log(mem)
     });
 };
 
@@ -56,3 +71,43 @@ $("#translateButton").on("click", function(event) {
     event.preventDefault();
     speechTranslate();
 });
+
+const saveJSON = () => {
+    let dataJSON = JSON.stringify(mem)
+    localStorage.setItem('dataJSON', dataJSON)
+}
+
+const buildJSON = () => {
+    var langValue = $("#second-language option:selected").value;
+
+    let date = new Date()
+    let obj = {
+        "date" : date.toLocaleDateString(),
+        "input" : inputText.value,
+        "starLang" : inputLanguage.value,
+        "endLang" : outputLanguage.value,
+        "output" : outputText.value
+    }
+    mem.push(obj)
+}
+
+const listJSON = () => {
+
+    let mapJSON = (data) => {
+        // displays html elements
+        savedLangauages.innerHTML += data.date + '<br>'
+        savedLangauages.innerHTML += data.starLang + '<br>'
+        savedLangauages.innerHTML += data.input + '<br>'
+        savedLangauages.innerHTML += data.endLang + '<br>'
+        savedLangauages.innerHTML += data.output + '<br>'
+        savedLangauages.innerHTML += '<br>'
+    }
+    
+    mem.forEach((value, index, array) => {
+       const sortDate = array.sort((a, b) => {
+           return new Date(b.date) - new Date(a.date)
+       })
+        mapJSON(sortDate[index])
+    });
+
+}
