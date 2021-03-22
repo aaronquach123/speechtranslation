@@ -1,9 +1,3 @@
-
-#startlang {
-  background-image:  url("../images/edit-solid.svg"); 
-  background-repeat: no-repeat;
-}
-
 :root {
     --light-green: #8CA653;
     --ugly-green: #6B732F;
@@ -41,10 +35,10 @@ input {
     padding: .1em;
 }
 
-.btn-round {
-    border-radius: 10%;
+button {
+    
 }
- 
+
 input[type="text"],
 textarea {
     background-color: var(--cream);
@@ -97,4 +91,3 @@ textarea {
         ;
     }
 }
-
