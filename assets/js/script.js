@@ -32,8 +32,6 @@ $("#speech-btn").on("click", function() {
         speechTranslate();
         };
     };
-    $("#event-modal").foundation('open')
-    $("#event-modal").text("Now recording")
     recognition.start();
 });
 
