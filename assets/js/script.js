@@ -1,14 +1,27 @@
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 var recognition = new SpeechRecognition();
 var text = "";
+var mem = [];
 
 var inputText = document.querySelector('#startlang');
 var inputLanguage = document.querySelector('#first-language');
 var outputText = document.querySelector('#secondlang');
 var outputLanguage = document.querySelector('#second-language');
+var savedLangauages = document.querySelector('#saved-content')
 var redirect = 'https://aaronquach123.github.io/speechtranslation/';
 var clientID = '794573419509-4cuda41iqqvm9lj8dsree30qlohj6m38.apps.googleusercontent.com';
 var substring = location.hash.substring(1);
+
+window.onload = () => {
+    if( localStorage.getItem('dataJSON') === null ) {
+        savedLangauages.innerHTML = 'no past translations made'
+    } else {
+        let dataJSON = localStorage.getItem('dataJSON');
+        parsedJSON = JSON.parse(dataJSON);
+        mem = parsedJSON
+        listJSON()
+    }
+}
 
 
 $("#speech-btn").on("click", function() {
@@ -19,6 +32,8 @@ $("#speech-btn").on("click", function() {
         speechTranslate();
         };
     };
+    $("#event-modal").foundation('open')
+    $("#event-modal").text("Now recording")
     recognition.start();
 });
 
@@ -26,7 +41,7 @@ var speechTranslate = function() {
     var firstLanguage = $("#first-language option:selected").val();
     var secondLanguage = $("#second-language option:selected").val();
     if (firstLanguage == secondLanguage) {
-        console.log("choose different translated language")
+        $("#event-modal").foundation("open")
         return;
     } 
     var settings = {
@@ -47,97 +62,54 @@ var speechTranslate = function() {
     };
     
     $.ajax(settings).done(function (response) {
-        console.log(response);
-        $("#secondlang").val(response.data.translations[0].translatedText)
+        $("#secondlang").val(response.data.translations[0].translatedText);
+        buildJSON()
+        saveJSON()
+        console.log(mem)
     });
 };
 
-$("#submit").on("click", function(event) {
+$("#translateButton").on("click", function(event) {
     event.preventDefault();
     speechTranslate();
 });
 
-var translationEvent = function() {
-    // Parse query string to see if page request is coming from OAuth2.0 Server
-var params = {};
-var regex = /([^&=]+)=([^&=]*)/g, m;
-
-while (m = regex.exec(substring)) {
-    params[decodeURIComponent(m[1])] = decodeURIComponent(m[2]);
+const saveJSON = () => {
+    let dataJSON = JSON.stringify(mem)
+    localStorage.setItem('dataJSON', dataJSON)
 }
 
+const buildJSON = () => {
+    var langValue = $("#second-language option:selected").value;
 
-// attempt to call api if keys are found
-var test = function translateLanguageRequest() {
+    let date = new Date()
+    let obj = {
+        "date" : date.toLocaleDateString(),
+        "input" : inputText.value,
+        "starLang" : inputLanguage.value,
+        "endLang" : outputLanguage.value,
+        "output" : outputText.value
+    }
+    mem.push(obj)
+}
+
+const listJSON = () => {
+
+    let mapJSON = (data) => {
+        // displays html elements
+        savedLangauages.innerHTML += data.date + '<br>'
+        savedLangauages.innerHTML += data.starLang + '<br>'
+        savedLangauages.innerHTML += data.input + '<br>'
+        savedLangauages.innerHTML += data.endLang + '<br>'
+        savedLangauages.innerHTML += data.output + '<br>'
+        savedLangauages.innerHTML += '<br>'
+    }
     
-    var params = JSON.parse(localStorage.getItem('oauth2-test-params'));
-    if (params && params['access_token']) {
-        var request = fetch('https://translation.googleapis.com/language/translate/v2', {
-            'method': 'POST',
-            'headers': {
-                'content-type': 'application/json',
-                'Authorization': `${params['access_token']}`
-            },
-            'body': {
-                'q': `${inputText}`,
-                'source': `${inputLanguage}`,
-                'target': `${outputLanguage}`
-            }
-        }).then(function(response) {
-            if (response.ok) {
-                response.json().then(function(data) {
-                    console.log(data);
-                    outputText = data.data.translations[0].translatedText;
-                }
-                )} else {
-                console.error(response.statusText);
-                signIn();
-            }
-        })
-    } else {
-        signIn();
-    }
+    mem.forEach((value, index, array) => {
+       const sortDate = array.sort((a, b) => {
+           return new Date(b.date) - new Date(a.date)
+       })
+        mapJSON(sortDate[index])
+    });
+
 }
-
-var signIn = function() {
-// find google's OAuth2 endpoint
-    var oauth2Endpoint = 'https://accounts.google.com/o/oauth2/v2/auth';
-
-    // create form element to send paramaters to OAuth2's endpoint
-    var form = document.createElement("form");
-    form.setAttribute('method', 'GET'); // Send as a get request;
-    form.setAttribute('action', oauth2Endpoint);
-
-    // Paramaters to pass to Oauth2's endpoint
-    var params = {
-        'client_id': `${clientID}`,
-        'redirect_uri': `${redirect}`,
-        'response_type': 'token',
-        'scope': 'https://www.googleapis.com/auth/cloud-translation',
-        'include_granted_scopes': 'true',
-        'state': 'pass-through value'
-    }
-
-    // add form paramaters as hidden input values
-    for (var p in params) {
-        var input = document.createElement('input');
-        input.setAttribute('type', 'hidden');
-        input.setAttribute('name', p);
-        input.setAttribute('value', params[p]);
-        form.appendChild(input);
-    }
-
-    // Add form to page and submit it to OAuth 2.0 endpoint
-    document.body.appendChild(form);
-    form.submit();
-}
-}
-
-var translateEventHandler = function(event) {
-    event.preventDefault();
-    translationEvent();
-    
-}
-
-translateButton.addEventListener("click", translateEventHandler);
-
