@@ -12,6 +12,8 @@ var redirect = 'https://aaronquach123.github.io/speechtranslation/';
 var clientID = '794573419509-4cuda41iqqvm9lj8dsree30qlohj6m38.apps.googleusercontent.com';
 var substring = location.hash.substring(1);
 
+var elem = new Foundation.Reveal($("#errorDisplay"));
+
 window.onload = () => {
     if( localStorage.getItem('dataJSON') === null ) {
         savedLangauages.innerHTML = 'no past translations made'
@@ -30,7 +32,10 @@ $("#speech-btn").on("click", function() {
         text = event.results[0][0].transcript;
         $("#startlang").val(text);
         speechTranslate();
-        };
+        } else {
+            $("#errorDisplayMsg").text("We didn't quite get that. Please press record and speak into the microphone again.")
+            $("#errorDisplay").foundation("open");
+        }
     };
     recognition.start();
 });
@@ -39,7 +44,8 @@ var speechTranslate = function() {
     var firstLanguage = $("#first-language option:selected").val();
     var secondLanguage = $("#second-language option:selected").val();
     if (firstLanguage == secondLanguage) {
-        $("#event-modal").foundation("open")
+        $("#errorDisplayMsg").text("Please choose two different languages to translate from")
+        $("#errorDisplay").foundation("open");
         return;
     } 
     var settings = {
@@ -59,12 +65,17 @@ var speechTranslate = function() {
         }
     };
     
-    $.ajax(settings).done(function (response) {
-        $("#secondlang").val(response.data.translations[0].translatedText);
-        buildJSON()
-        saveJSON()
-        console.log(mem)
-    });
+    $.ajax(settings)
+        .done(function (data) {
+            $("#secondlang").val(response.data.translations[0].translatedText);
+            buildJSON()
+            aveJSON()
+            console.log(mem)
+        })
+        .fail(function (error) {
+            $("#errorDisplayMsg").text("Error:"+ error.statusText)
+            $("#errorDisplay").foundation("open");
+        });
 };
 
 $("#translateButton").on("click", function(event) {
